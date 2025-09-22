@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.egg
+*.egg-info/
+*.sqlite3
+db.sqlite3
+
+# Virtual Environments
+venv/
+.venv/
+ENV/
+env/
+.venv_healthcare/
+
+# Django Stuff
+*.log
+local_settings.py
+media/
+staticfiles/
+static/
+
+# Docker
+*.pid
+*.seed
+*.pid.lock
+docker-compose.override.yml
+
+# IDE / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment & Secrets
+.env
+*.env
+.env.*
+config/settings/local.py
+
+# Migrations (optional: keep if you want them tracked)
+**/migrations/*.py
+!**/migrations/__init__.py

@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  healthcare_api:
+    image: mysql:8.0
+    container_name:  mysql_healthcare_api  
+    restart: always  # automatically restart if container crashes
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}   # set root password
+      MYSQL_DATABASE: ${DB_NAME}                 # create a database at startup
+      MYSQL_USER: ${DB_USER}                     # create a custom user
+      MYSQL_PASSWORD: ${DB_PASSWORD}             # password for the custom user
+    ports:
+        - "3307:3306"                        # map host port -> container port
+    volumes:
+      - doctor_appointment_api_data:/var/lib/mysql     # persist database data
+    networks:
+      - backend
+
+  adminer:
+    image: adminer:latest
+    container_name: healthcare_ui
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+  api_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: health_api
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: healthcare_api
+      DB_PORT: 3306 
+    depends_on:
+      - healthcare_api
+    networks:
+      - backend
+
+volumes:
+  doctor_appointment_api_data:
+
+networks:
+  backend:
