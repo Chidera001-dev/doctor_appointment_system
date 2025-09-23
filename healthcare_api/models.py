@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings   # ✅ import settings, not your User directly
+from django.conf import settings  
 from django.contrib.auth.models import AbstractUser
 
 
@@ -53,6 +53,8 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"Appointment: {self.patient.username} with {self.doctor.user.username} on {self.date}"
+
+
 
 
 
