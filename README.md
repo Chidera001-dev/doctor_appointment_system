@@ -1,5 +1,17 @@
 # Doctor Appointment System
+## Changelog
 
+### Recent Updates
+
+- Implemented user authentication for both patients and doctors.
+- Added doctor profile creation and editing functionality.
+- Enabled patients to browse doctor profiles and book appointments.
+- Developed appointment management features for doctors (accept/decline requests).
+- Built separate dashboards for patients and doctors.
+- Integrated notification system for appointment confirmations and reminders.
+- Improved UI for easier navigation and usability.
+- Fixed bugs related to appointment scheduling conflicts.
+- Updated documentation for setup and usage instructions.
 This project is a Doctor Appointment System designed to streamline the process of booking and managing appointments between patients and doctors.
 
 ## Features Implemented

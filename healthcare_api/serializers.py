@@ -8,18 +8,29 @@ User = get_user_model()
 # Register Serializer
 # -----------------------------
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(
+        write_only=True,
+        style={'input_type': 'password'}   # 👈 this makes it hidden in the browsable API
+    )
+    password_confirmation = serializers.CharField(
+        write_only=True,
+        style={'input_type': 'password'}   # 👈 same here
+    )
 
     class Meta:
         model = User
-        # Notice: we do NOT expose is_doctor here
-        fields = ["id", "username", "email", "password"]
+        fields = ["id", "username", "email", "password", "password_confirmation"]
 
     def create(self, validated_data):
         password = validated_data.pop("password")
+        password_confirmation = validated_data.pop("password_confirmation")
+
+        if password != password_confirmation:
+            raise serializers.ValidationError({"password": "Passwords must match."})
+
         user = User(**validated_data)
-        user.set_password(password)  # hash the password
-        user.is_doctor = False       # enforce default
+        user.set_password(password)  # hash password
+        user.is_doctor = False
         user.save()
         return user
 
