@@ -129,7 +129,7 @@ class DoctorUpdateView(generics.UpdateAPIView):
 class AppointmentListView(generics.ListCreateAPIView):
     """Patients can see their appointments, Doctors can see appointments assigned to them"""
     serializer_class = AppointmentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated ,  IsAppointmentOwnerOrDoctor]
 
     def get_queryset(self):
         user = self.request.user

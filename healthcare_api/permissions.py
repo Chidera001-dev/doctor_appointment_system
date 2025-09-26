@@ -15,14 +15,20 @@ class IsAdminOrDoctor(permissions.BasePermission):
     """Both Admin and Doctors can access"""
     def has_permission(self, request, view):
         return request.user and (request.user.is_staff or request.user.is_doctor)
-    
-class  IsAppointmentOwnerOrDoctor(permissions.BasePermission):
-    """Patients can manage their own appointments, Doctors can manage appointments assigned to them"""
+
+
+class IsAppointmentOwnerOrDoctor(permissions.BasePermission):
+    """Patient can access their appointments, Doctor can access appointments assigned to them"""
     def has_object_permission(self, request, view, obj):
-        user = request.user
-        if user.is_staff:
-            return True  # Admin can access all appointments
-        elif user.is_doctor:
-            return obj.doctor.user == user  # Doctors can access appointments assigned to them
-        else:
-            return obj.patient == user  # Patients can access their own appointments
+        if request.user.is_staff:
+            return True
+        
+        # Patient can access their own appointments
+        if obj.patient == request.user:
+            return True
+        
+        # Doctor can access appointments assigned to them
+        if hasattr(request.user, 'doctor_profile') and obj.doctor == request.user.doctor_profile:
+            return True
+        
+        return False
