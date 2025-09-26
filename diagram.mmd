@@ -1,0 +1,10 @@
+flowchart TD
+    A[Users Registers] --> B[Login with JWT & Admin Sets is_doctor=True]
+    B --> C[Auto Create DoctorProfile]
+    C --> D[Doctor Updates Profile]
+    D --> E[Specialization, Experience, Availability]
+    E --> F[Patient Views Doctors]
+    F --> G[Patient Books Appointment]
+    G --> H[Doctor Confirms/Rejects]
+    H --> I[Email Sent to Patient]
+    I --> J[Appointment Confirmed/Rejected]

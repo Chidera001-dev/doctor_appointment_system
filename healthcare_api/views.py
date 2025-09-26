@@ -7,10 +7,12 @@ from .serializers import (
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import status
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+#from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsAdminUser,  IsAdminOrDoctor
+from .permissions import IsAdminUser,  IsAdminOrDoctor, IsAppointmentOwnerOrDoctor
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -85,6 +87,19 @@ class DoctorListView(generics.ListAPIView):
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAuthenticated]
 
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    # Filtering: exact match
+    filterset_fields = ['specialization', 'experience_years']
+
+    # Searching: partial match
+    search_fields = ['specialization']
+
+    # Ordering: sort doctors
+    ordering_fields = ['ratings', 'experience_years']
+    ordering = ['-ratings']  # default: highest rated first
+
 class DoctorDetailView(generics.RetrieveAPIView):
     """Retrieve a specific doctor's profile - accessible to all authenticated users"""
     queryset = DoctorProfile.objects.all()
@@ -108,3 +123,41 @@ class DoctorUpdateView(generics.UpdateAPIView):
         if self.request.user.is_doctor:
             return DoctorProfile.objects.filter(user=self.request.user)
         return DoctorProfile.objects.all()
+    
+
+# for viewsets (AppointmentViewSet)
+class AppointmentListView(generics.ListCreateAPIView):
+    """Patients can see their appointments, Doctors can see appointments assigned to them"""
+    serializer_class = AppointmentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.is_staff:
+            # Admin can see all appointments
+            return Appointment.objects.all()
+        elif user.is_doctor:
+            # Doctors can see appointments assigned to them
+            doctor_profile = user.doctor_profile
+            return Appointment.objects.filter(doctor=doctor_profile)
+        else:
+            # Patients can see their own appointments
+            return Appointment.objects.filter(patient=user)
+
+    def perform_create(self, serializer):
+        """Patients can book appointments"""
+        if self.request.user.is_doctor or self.request.user.is_staff:
+            return Response(
+                {"error": "Only patients can book appointments"}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Set the patient as the current user
+        serializer.save(patient=self.request.user)
+
+class AppointmentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Patients can view/cancel their appointments, Doctors can confirm/reject"""
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializer
+    permission_classes = [IsAppointmentOwnerOrDoctor]

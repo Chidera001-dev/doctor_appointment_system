@@ -1,0 +1,21 @@
+erDiagram
+    USER {
+        int id PK
+        string username
+        string email
+        boolean is_doctor
+    }
+    DOCTOR_PROFILE {
+        int id PK
+        int user_id FK
+        string specialization
+    }
+    APPOINTMENT {
+        int id PK
+        int patient_id FK
+        int doctor_id FK
+        date date
+        string status
+    }
+    USER ||--o| DOCTOR_PROFILE : has
+    USER ||--o{ APPOINTMENT : makes
