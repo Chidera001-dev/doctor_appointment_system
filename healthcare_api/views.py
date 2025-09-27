@@ -97,8 +97,8 @@ class DoctorListView(generics.ListAPIView):
     search_fields = ['specialization']
 
     # Ordering: sort doctors
-    ordering_fields = ['ratings', 'experience_years']
-    ordering = ['-ratings']  # default: highest rated first
+    ordering_fields = [ 'experience_years']
+    ordering = ['-experience_years']  # default ordering
 
 class DoctorDetailView(generics.RetrieveAPIView):
     """Retrieve a specific doctor's profile - accessible to all authenticated users"""
