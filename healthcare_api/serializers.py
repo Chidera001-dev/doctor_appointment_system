@@ -4,17 +4,16 @@ from .models import DoctorProfile, Appointment
 
 User = get_user_model()
 
-# -----------------------------
+
 # Register Serializer
-# -----------------------------
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True,
-        style={'input_type': 'password'}   # 👈 this makes it hidden in the browsable API
+        style={'input_type': 'password'}   
     )
     password_confirmation = serializers.CharField(
         write_only=True,
-        style={'input_type': 'password'}   # 👈 same here
+        style={'input_type': 'password'}   
     )
 
     class Meta:
@@ -35,18 +34,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-# -----------------------------
+
 # User Serializer (for responses)
-# -----------------------------
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id","username", "email", "is_doctor"]
 
 
-# -----------------------------
+
 # Doctor Profile Serializer
-# -----------------------------
 class DoctorProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
@@ -55,9 +52,9 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
         fields = ["id", "user", "specialization", "experience_years", "available_days", "available_time_slots"]
 
 
-# -----------------------------
+
+
 # Appointment Serializer
-# -----------------------------
 class AppointmentSerializer(serializers.ModelSerializer):
     patient = UserSerializer(read_only=True)
     doctor = DoctorProfileSerializer(read_only=True)

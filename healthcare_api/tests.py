@@ -1,13 +1,13 @@
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
-from .models import DoctorProfile
+from .models import DoctorProfile, Appointment
 
 User = get_user_model()
 
 class DoctorTests(APITestCase):
     def setUp(self):
-        DoctorProfile.objects.all().delete()   # wipe doctors
-        User.objects.all().delete()            # wipe users
+        DoctorProfile.objects.all().delete()  
+        User.objects.all().delete()           
 
         # Create a patient user
         self.patient = User.objects.create_user(username="patient1", password="1234")
@@ -35,12 +35,6 @@ class DoctorTests(APITestCase):
 
 
 
-from rest_framework.test import APITestCase
-from django.contrib.auth import get_user_model
-from .models import DoctorProfile, Appointment
-
-User = get_user_model()
-
 class AppointmentTests(APITestCase):
     def setUp(self):
         # Patient
@@ -57,7 +51,7 @@ class AppointmentTests(APITestCase):
         self.client.force_authenticate(user=self.patient)
 
         data = {
-            "doctor": self.doctor_profile.id,  # <-- check if it's profile.id or user.id in your serializer
+            "doctor": self.doctor_profile.id,  # assuming doctor is referenced by ID
             "date": "2025-10-01",
             "time": "10:00:00"
         }
@@ -67,7 +61,7 @@ class AppointmentTests(APITestCase):
         self.assertEqual(Appointment.objects.count(), 1)
         appointment = Appointment.objects.first()
         self.assertEqual(appointment.patient, self.patient)
-        self.assertEqual(appointment.doctor, self.doctor_profile)  # <-- adjust if doctor is linked to User
+        self.assertEqual(appointment.doctor, self.doctor_profile)  # doctor is FK to DoctorProfile
 
 
 
