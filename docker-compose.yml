@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  healthcare_api:
+  appointment_api:
     image: mysql:8.0
-    container_name:  mysql_healthcare_api  
+    container_name:  mysql_appointment_api  
     restart: always  # automatically restart if container crashes
     env_file:
       - .env
@@ -43,10 +43,10 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: healthcare_api
+      DB_HOST: appointment_api
       DB_PORT: 3306 
     depends_on:
-      - healthcare_api
+      - appointment_api
     networks:
       - backend
 

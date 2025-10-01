@@ -49,12 +49,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'healthcare_api.apps.HealthcareApiConfig', 
+    'appointment_api.apps.AppointmentApiConfig',
+    'authentication.apps.AuthenticationConfig',
+
+
 
     #third party apps
     'rest_framework', 
     'django_filters',  
     'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
+    
           
 ]
 
@@ -86,8 +91,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'clinic_booking.wsgi.application'
-AUTH_USER_MODEL = "healthcare_api.User"
 
+
+AUTH_USER_MODEL = "authentication.User"
 
 
 # Database
@@ -99,10 +105,11 @@ DATABASES = {
         'NAME': os.getenv("DB_NAME"),
         'USER': os.getenv("DB_USER"),
         'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST", "healthcare_api"),
+        'HOST': os.getenv("DB_HOST", "appointment_api"),
         'PORT': os.getenv("DB_PORT", "3306"),
     }
 }
+
 
 
 
@@ -128,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -168,6 +175,15 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
