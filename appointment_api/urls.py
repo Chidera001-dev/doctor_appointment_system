@@ -3,12 +3,12 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     UserListCreateView, UserDetailView,   
     DoctorListView, DoctorDetailView, DoctorCreateView, DoctorUpdateView,
-    AppointmentListView, AppointmentDetailView, DoctorProfileViewSet
+    AppointmentListView, AppointmentDetailView,  DoctorDeleteView
 )
 
 # Router for ViewSets
-router = DefaultRouter()
-router.register(r'doctor-profiles', DoctorProfileViewSet, basename='doctor-profile')
+#router = DefaultRouter()
+#router.register()
 
 urlpatterns = [
     # Admin - User Management
@@ -20,12 +20,13 @@ urlpatterns = [
     path("doctors/<int:pk>/", DoctorDetailView.as_view(), name="doctor-detail"),
     path("doctors/create/", DoctorCreateView.as_view(), name="doctor-create"),
     path("doctors/<int:pk>/update/", DoctorUpdateView.as_view(), name="doctor-update"),
+    path("doctors/<int:pk>/delete/", DoctorDeleteView.as_view(), name="doctor-delete"),
 
     # Appointments
     path("appointments/", AppointmentListView.as_view(), name="appointment-list"),
     path("appointments/<int:pk>/", AppointmentDetailView.as_view(), name="appointment-detail"),
 
     # Include router URLs for DoctorProfileViewSet
-    path("", include(router.urls)),
+    #path("", include(router.urls)),
 ]
 

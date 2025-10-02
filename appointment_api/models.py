@@ -11,11 +11,13 @@ class DoctorProfile(models.Model):
     )
     specialization = models.CharField(max_length=100,  null=True, blank=True)
     experience_years = models.PositiveIntegerField(null=True, blank=True)
-    available_days = models.CharField(max_length=100)  # e.g. "Mon, Wed, Fri"
-    available_time_slots = models.CharField(max_length=100)  # e.g. "10AM-2PM"
+    available_days = models.CharField(max_length=100 )  # e.g. "Mon, Wed, Fri"
+    available_time_slots = models.CharField(max_length=100,default="")  # e.g. "10AM-2PM"
+
 
     def __str__(self):
         return f"Dr. {self.user.username} - {self.specialization}"
+    
 
 
 # Appointment Model

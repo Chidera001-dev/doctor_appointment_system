@@ -1,25 +1,32 @@
-from django.shortcuts import render
-from django.shortcuts import render
-from rest_framework import generics , status
+from django.contrib.auth import get_user_model
+from rest_framework import generics, status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
-from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserCreationSerializer
 
-
-
+User = get_user_model()  
 
 class UserCreateView(generics.GenericAPIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
     serializer_class = UserSerializer
 
     @swagger_auto_schema(operation_summary="Create a user account")
     def post(self, request):
-        data = request.data
-        serializer = self.get_serializer(data=data)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
 
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # ✅ Return saved user data
+        return Response(
+            UserCreationSerializer(user).data,   # show created user info
+            status=status.HTTP_201_CREATED
+        )
+    
+
+
+
+
 
 # Create your views here.
