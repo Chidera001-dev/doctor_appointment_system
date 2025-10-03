@@ -1,8 +1,8 @@
+import datetime
+
 from rest_framework import serializers
 
 from .models import Appointment, DoctorProfile
-
-import datetime
 
 
 # DoctorProfile Serializer
@@ -71,12 +71,16 @@ class AppointmentSerializer(serializers.ModelSerializer):
             end_time = datetime.datetime.strptime(end_str.strip(), "%I%p").time()
         except Exception:
             raise serializers.ValidationError(
-                {"time": "Doctor's available_time_slots format is invalid. Use '10AM-2PM'."}
+                {
+                    "time": "Doctor's available_time_slots format is invalid. Use '10AM-2PM'."
+                }
             )
 
         if not (start_time <= time <= end_time):
             raise serializers.ValidationError(
-                {"time": f"Doctor is only available between {start_time.strftime('%I:%M %p')} and {end_time.strftime('%I:%M %p')}."}
+                {
+                    "time": f"Doctor is only available between {start_time.strftime('%I:%M %p')} and {end_time.strftime('%I:%M %p')}."
+                }
             )
 
         return attrs
@@ -85,4 +89,3 @@ class AppointmentSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         validated_data["patient"] = request.user  # assign logged-in user as patient
         return super().create(validated_data)
-
