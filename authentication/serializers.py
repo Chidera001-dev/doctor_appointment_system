@@ -1,44 +1,43 @@
+from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from phonenumber_field.serializerfields import PhoneNumberField
-from .models import User
 
+from .models import User
 
 # Input serializer (for registration + update)
 
+
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
-        max_length=25,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        max_length=25, validators=[UniqueValidator(queryset=User.objects.all())]
     )
     email = serializers.EmailField(
-        max_length=80,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        max_length=80, validators=[UniqueValidator(queryset=User.objects.all())]
     )
     phone_number = PhoneNumberField(
         allow_null=False,
         allow_blank=False,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        validators=[UniqueValidator(queryset=User.objects.all())],
     )
     password = serializers.CharField(
         min_length=8,
         write_only=True,
-        required=True,   # required only when creating
-        style={'input_type': 'password'}
+        required=True,  # required only when creating
+        style={"input_type": "password"},
     )
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'phone_number', 'password']
+        fields = ["id", "username", "email", "phone_number", "password"]
 
     def create(self, validated_data):
         user = User(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            phone_number=validated_data['phone_number'],
-            is_doctor=False
+            username=validated_data["username"],
+            email=validated_data["email"],
+            phone_number=validated_data["phone_number"],
+            is_doctor=False,
         )
-        user.set_password(validated_data['password'])  # hashes password
+        user.set_password(validated_data["password"])  # hashes password
         user.save()
         return user
 
@@ -53,11 +52,10 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
-
 # Output serializer (safe response)
+
 
 class UserCreationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'phone_number']
-
+        fields = ["id", "username", "email", "phone_number"]

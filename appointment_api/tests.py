@@ -1,23 +1,25 @@
-from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
-from .models import DoctorProfile, Appointment
+from rest_framework.test import APITestCase
+
+from .models import Appointment, DoctorProfile
 
 User = get_user_model()
 
+
 class DoctorTests(APITestCase):
     def setUp(self):
-        DoctorProfile.objects.all().delete()  
-        User.objects.all().delete()           
+        DoctorProfile.objects.all().delete()
+        User.objects.all().delete()
 
         # Create a patient user
         self.patient = User.objects.create_user(username="patient1", password="1234")
 
         # Create a doctor user + doctor profile
-        self.doctor_user = User.objects.create_user(username="doc1", password="1234", is_doctor=True)
+        self.doctor_user = User.objects.create_user(
+            username="doc1", password="1234", is_doctor=True
+        )
         self.doctor_profile = DoctorProfile.objects.create(
-            user=self.doctor_user,
-            specialization="Cardiology",
-            experience_years=5
+            user=self.doctor_user, specialization="Cardiology", experience_years=5
         )
 
     def test_patient_can_view_doctors(self):
@@ -28,11 +30,8 @@ class DoctorTests(APITestCase):
         response = self.client.get("/api/doctors/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["count"], 1)   # check count
+        self.assertEqual(response.data["count"], 1)  # check count
         self.assertEqual(response.data["results"][0]["specialization"], "Cardiology")
-
-
-
 
 
 class AppointmentTests(APITestCase):
@@ -41,10 +40,11 @@ class AppointmentTests(APITestCase):
         self.patient = User.objects.create_user(username="patient1", password="1234")
 
         # Doctor + Profile
-        self.doctor_user = User.objects.create_user(username="doc1", password="1234", is_doctor=True)
+        self.doctor_user = User.objects.create_user(
+            username="doc1", password="1234", is_doctor=True
+        )
         self.doctor_profile = DoctorProfile.objects.create(
-            user=self.doctor_user,
-            specialization="Cardiology"
+            user=self.doctor_user, specialization="Cardiology"
         )
 
     def test_patient_can_book_appointment(self):
@@ -53,7 +53,7 @@ class AppointmentTests(APITestCase):
         data = {
             "doctor": self.doctor_profile.id,  # assuming doctor is referenced by ID
             "date": "2025-10-01",
-            "time": "10:00:00"
+            "time": "10:00:00",
         }
         response = self.client.post("/api/appointments/", data, format="json")
 
@@ -61,8 +61,9 @@ class AppointmentTests(APITestCase):
         self.assertEqual(Appointment.objects.count(), 1)
         appointment = Appointment.objects.first()
         self.assertEqual(appointment.patient, self.patient)
-        self.assertEqual(appointment.doctor, self.doctor_profile)  # doctor is FK to DoctorProfile
-
+        self.assertEqual(
+            appointment.doctor, self.doctor_profile
+        )  # doctor is FK to DoctorProfile
 
 
 # Create your tests here.

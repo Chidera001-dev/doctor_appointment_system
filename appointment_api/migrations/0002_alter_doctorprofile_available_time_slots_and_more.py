@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('appointment_api', '0001_initial'),
+        ("appointment_api", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='doctorprofile',
-            name='available_time_slots',
-            field=models.CharField(default='', max_length=100),
+            model_name="doctorprofile",
+            name="available_time_slots",
+            field=models.CharField(default="", max_length=100),
         ),
         migrations.AlterField(
-            model_name='doctorprofile',
-            name='experience_years',
+            model_name="doctorprofile",
+            name="experience_years",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='doctorprofile',
-            name='specialization',
+            model_name="doctorprofile",
+            name="specialization",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
     ]

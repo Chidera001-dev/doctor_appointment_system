@@ -1,24 +1,21 @@
-
 from django.contrib.auth import get_user_model
-from rest_framework import generics, status, filters, viewsets
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
-from .models import DoctorProfile, Appointment
-from .serializers import  DoctorProfileSerializer, AppointmentSerializer
-from .permissions import IsAdminUser, IsAdminOrDoctor, IsAppointmentOwnerOrDoctor
-from .serializers import DoctorProfileSerializer, AppointmentSerializer
+from rest_framework import filters, generics, status, viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 from authentication.serializers import UserSerializer
 
-
+from .models import Appointment, DoctorProfile
+from .permissions import IsAdminOrDoctor, IsAdminUser, IsAppointmentOwnerOrDoctor
+from .serializers import AppointmentSerializer, DoctorProfileSerializer
 
 User = get_user_model()
 
 
-
-
 # User Management (Admin)
+
 
 class UserListCreateView(generics.GenericAPIView):
     queryset = User.objects.all()
@@ -70,19 +67,23 @@ class UserDetailView(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 # Doctor Views
+
 
 class DoctorListView(generics.GenericAPIView):
     queryset = DoctorProfile.objects.all()
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAuthenticated]
 
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['specialization', 'experience_years']
-    search_fields = ['specialization']
-    ordering_fields = ['experience_years']
-    ordering = ['-experience_years']
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["specialization", "experience_years"]
+    search_fields = ["specialization"]
+    ordering_fields = ["experience_years"]
+    ordering = ["-experience_years"]
 
     @swagger_auto_schema(operation_summary="List all doctors")
     def get(self, request, *args, **kwargs):
@@ -149,13 +150,12 @@ class DoctorDeleteView(generics.GenericAPIView):
         instance.delete()
         return Response(
             {"detail": f"Doctor profile with ID {instance.id} has been deleted."},
-            status=status.HTTP_204_NO_CONTENT
+            status=status.HTTP_204_NO_CONTENT,
         )
 
 
-
-
 # Appointment Views
+
 
 class AppointmentListView(generics.GenericAPIView):
     serializer_class = AppointmentSerializer
@@ -179,7 +179,10 @@ class AppointmentListView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Create a new appointment (Patients only)")
     def post(self, request, *args, **kwargs):
         if request.user.is_doctor or request.user.is_staff:
-            return Response({"error": "Only patients can book appointments"}, status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {"error": "Only patients can book appointments"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save(patient=request.user)

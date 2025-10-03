@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from .models import DoctorProfile, Appointment
 
+from .models import Appointment, DoctorProfile
 
 # DoctorProfile Serializer
+
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,6 +21,7 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
 
 # Appointment Serializer
 
+
 class AppointmentSerializer(serializers.ModelSerializer):
     # show patient and doctor info
     patient = serializers.StringRelatedField(read_only=True)
@@ -27,9 +29,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     # write-only field to assign doctor via ID
     doctor_id = serializers.PrimaryKeyRelatedField(
-        queryset=DoctorProfile.objects.all(),
-        source="doctor",
-        write_only=True
+        queryset=DoctorProfile.objects.all(), source="doctor", write_only=True
     )
 
     class Meta:
@@ -50,4 +50,3 @@ class AppointmentSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         validated_data["patient"] = request.user  # assign logged-in user as patient
         return super().create(validated_data)
-

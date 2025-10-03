@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
-from .serializers import UserSerializer, UserCreationSerializer
 
-User = get_user_model()  
+from .serializers import UserCreationSerializer, UserSerializer
+
+User = get_user_model()
+
 
 class UserCreateView(generics.GenericAPIView):
     queryset = User.objects.all()
@@ -20,13 +22,9 @@ class UserCreateView(generics.GenericAPIView):
 
         # ✅ Return saved user data
         return Response(
-            UserCreationSerializer(user).data,   # show created user info
-            status=status.HTTP_201_CREATED
+            UserCreationSerializer(user).data,  # show created user info
+            status=status.HTTP_201_CREATED,
         )
-    
-
-
-
 
 
 # Create your views here.

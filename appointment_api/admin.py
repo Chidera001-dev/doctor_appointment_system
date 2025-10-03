@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import DoctorProfile, Appointment
+
+from .models import Appointment, DoctorProfile
 
 
 @admin.register(DoctorProfile)
@@ -28,9 +29,6 @@ class AppointmentAdmin(admin.ModelAdmin):
     search_fields = ("patient__username", "doctor__user__username")
     list_filter = ("status", "date")
     ordering = ("-created_at",)
-
-
-
 
 
 # Register your models here.
