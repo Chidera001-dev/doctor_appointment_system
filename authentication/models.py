@@ -31,13 +31,13 @@ class CustomerUserManager(BaseUserManager):
 
 class User(AbstractUser):
     id = models.CharField(
-    primary_key=True,
-    max_length=22,  
-    default=shortuuid.uuid,
-    editable=False,
-    unique=True
+        primary_key=True,
+        max_length=22,
+        default=shortuuid.uuid,
+        editable=False,
+        unique=True,
     )
-       
+
     username = models.CharField(max_length=25, unique=True)
     email = models.EmailField(max_length=80, unique=True)
     phone_number = PhoneNumberField(unique=True)
