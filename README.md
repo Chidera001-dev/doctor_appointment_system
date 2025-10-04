@@ -2,6 +2,8 @@
 
 ## Project Overview
 
+This Doctor Appointment System is a web-based application that simplifies the process of scheduling and managing appointments for both patients and doctors. It offers secure user authentication, real-time doctor availability, and an intuitive interface for booking and tracking appointments. The system also includes an admin dashboard for overseeing users and appointments, ensuring efficient management and smooth operation.
+
 This project is a **Doctor Appointment System** designed to streamline the process of booking, managing, and tracking appointments between patients and doctors. The system provides a user-friendly interface for patients to schedule appointments, view doctor availability. Doctors can manage their schedules, view upcoming appointments, and update their availability.
 
 ## Features
