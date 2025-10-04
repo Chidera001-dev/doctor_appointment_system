@@ -1,13 +1,13 @@
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-
 from .models import User
 
+
 # Input serializer (for registration + update)
-
-
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)  # shortuuid will be auto-generated
+
     username = serializers.CharField(
         max_length=25, validators=[UniqueValidator(queryset=User.objects.all())]
     )
@@ -53,9 +53,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 # Output serializer (safe response)
-
-
 class UserCreationSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)  # shortuuid output only
+
     class Meta:
         model = User
         fields = ["id", "username", "email", "phone_number"]
+
