@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import filters, generics, status, viewsets
+from rest_framework import filters, generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -215,3 +215,32 @@ class AppointmentDetailView(generics.GenericAPIView):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class AppointmentStatusUpdateView(generics.UpdateAPIView):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializer
+    permission_classes = [IsAuthenticated, IsAppointmentOwnerOrDoctor]
+
+    @swagger_auto_schema(operation_summary="Doctor confirms or cancels an appointment")
+    def patch(self, request, *args, **kwargs):
+        appointment = self.get_object()
+
+        # Only the doctor assigned to this appointment (or admin) can update it
+        if not (request.user.is_staff or appointment.doctor.user == request.user):
+            return Response(
+                {"error": "You are not allowed to modify this appointment."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        status_choice = request.data.get("status")
+        if status_choice not in ["confirmed", "cancelled"]:
+            return Response(
+                {"error": "Invalid status. Choose 'confirmed' or 'cancelled'."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        appointment.status = status_choice
+        appointment.save()  # This triggers your signal
+        serializer = self.get_serializer(appointment)
+        return Response(serializer.data, status=status.HTTP_200_OK)        

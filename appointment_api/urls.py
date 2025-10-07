@@ -1,5 +1,4 @@
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from django.urls import  path
 
 from .views import (
     AppointmentDetailView,
@@ -11,11 +10,9 @@ from .views import (
     DoctorUpdateView,
     UserDetailView,
     UserListCreateView,
+    AppointmentStatusUpdateView,
 )
 
-# Router for ViewSets
-# router = DefaultRouter()
-# router.register()
 
 urlpatterns = [
     # Admin - User Management
@@ -25,12 +22,14 @@ urlpatterns = [
     path(
         "admin/users/<int:pk>/", UserDetailView.as_view(), name="user-detail"
     ),  # GET, PUT, DELETE
+
     # Doctors (class-based views)
     path("doctors/", DoctorListView.as_view(), name="doctor-list"),
     path("doctors/<int:pk>/", DoctorDetailView.as_view(), name="doctor-detail"),
     path("doctors/create/", DoctorCreateView.as_view(), name="doctor-create"),
     path("doctors/<int:pk>/update/", DoctorUpdateView.as_view(), name="doctor-update"),
     path("doctors/<int:pk>/delete/", DoctorDeleteView.as_view(), name="doctor-delete"),
+
     # Appointments
     path("appointments/", AppointmentListView.as_view(), name="appointment-list"),
     path(
@@ -38,6 +37,12 @@ urlpatterns = [
         AppointmentDetailView.as_view(),
         name="appointment-detail",
     ),
-    # Include router URLs for DoctorProfileViewSet
-    # path("", include(router.urls)),
+
+    # AppointmentStatusUpdate
+     path(
+        "appointments/<int:pk>/status/",
+        AppointmentStatusUpdateView.as_view(),
+        name="appointment-status-update",
+    ),
+
 ]
