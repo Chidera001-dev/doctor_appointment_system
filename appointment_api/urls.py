@@ -1,5 +1,4 @@
-from django.urls import  path
-
+from django.urls import path
 from .views import (
     AppointmentDetailView,
     AppointmentListView,
@@ -13,36 +12,34 @@ from .views import (
     AppointmentStatusUpdateView,
 )
 
-
 urlpatterns = [
     # Admin - User Management
     path(
         "admin/users/", UserListCreateView.as_view(), name="user-list-create"
     ),  # GET (list) and POST (create)
     path(
-        "admin/users/<int:pk>/", UserDetailView.as_view(), name="user-detail"
+        "admin/users/<str:pk>/", UserDetailView.as_view(), name="user-detail"
     ),  # GET, PUT, DELETE
 
-    # Doctors (class-based views)
-    path("doctors/", DoctorListView.as_view(), name="doctor-list"),
-    path("doctors/<int:pk>/", DoctorDetailView.as_view(), name="doctor-detail"),
-    path("doctors/create/", DoctorCreateView.as_view(), name="doctor-create"),
-    path("doctors/<int:pk>/update/", DoctorUpdateView.as_view(), name="doctor-update"),
-    path("doctors/<int:pk>/delete/", DoctorDeleteView.as_view(), name="doctor-delete"),
+ # Doctors (class-based views)
+path("doctors/", DoctorListView.as_view(), name="doctor-list"),                     # List all doctors
+path("doctors/create/", DoctorCreateView.as_view(), name="doctor-create"),          # Create a new doctor
+path("doctors/<str:pk>/", DoctorDetailView.as_view(), name="doctor-detail"),        # Retrieve a doctor by UUID
+path("doctors/<str:pk>/update/", DoctorUpdateView.as_view(), name="doctor-update"), # Update a doctor by UUID
+path("doctors/<str:pk>/delete/", DoctorDeleteView.as_view(), name="doctor-delete"), # Delete a doctor by UUID
 
     # Appointments
     path("appointments/", AppointmentListView.as_view(), name="appointment-list"),
     path(
-        "appointments/<int:pk>/",
+        "appointments/<str:pk>/",
         AppointmentDetailView.as_view(),
         name="appointment-detail",
     ),
 
-    # AppointmentStatusUpdate
-     path(
-        "appointments/<int:pk>/status/",
+    # Appointment Status Update
+    path(
+        "appointments/<str:pk>/status/",
         AppointmentStatusUpdateView.as_view(),
         name="appointment-status-update",
     ),
-
 ]

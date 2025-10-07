@@ -4,6 +4,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import filters, generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 from authentication.serializers import UserSerializer
 
@@ -42,13 +43,13 @@ class UserDetailView(generics.GenericAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
 
-    @swagger_auto_schema(operation_summary="Retrieve a user by ID")
+    @swagger_auto_schema(operation_summary="Retrieve a user by UUID")
     def get(self, request, *args, **kwargs):
         user = self.get_object()
         serializer = self.get_serializer(user)
         return Response(serializer.data)
 
-    @swagger_auto_schema(operation_summary="Update a user by ID")
+    @swagger_auto_schema(operation_summary="Update a user by UUID")
     def put(self, request, *args, **kwargs):
         instance = self.get_object()
         data = request.data.copy()
@@ -60,7 +61,7 @@ class UserDetailView(generics.GenericAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(operation_summary="Delete a user by ID")
+    @swagger_auto_schema(operation_summary="Delete a user by UUID")
     def delete(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.delete()
@@ -96,8 +97,16 @@ class DoctorDetailView(generics.GenericAPIView):
     queryset = DoctorProfile.objects.all()
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAuthenticated]
+    lookup_field = "id"
 
-    @swagger_auto_schema(operation_summary="Retrieve a doctor profile by ID")
+    def get_object(self):
+        # Fetch DoctorProfile using the user UUID passed in the URL as pk
+        user_id = self.kwargs["pk"]
+        return get_object_or_404(DoctorProfile, user__id=user_id)
+
+    
+
+    @swagger_auto_schema(operation_summary="Retrieve a doctor profile by UUID")
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
@@ -123,6 +132,11 @@ class DoctorUpdateView(generics.GenericAPIView):
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAuthenticated, IsAdminOrDoctor]
 
+    def get_object(self):
+        # Fetch DoctorProfile by the related user's UUID from URL
+        user_id = self.kwargs["pk"]
+        return get_object_or_404(DoctorProfile, user__id=user_id) 
+
     def get_queryset(self):
         user = self.request.user
         if user.is_doctor and not user.is_staff:
@@ -143,6 +157,12 @@ class DoctorDeleteView(generics.GenericAPIView):
     queryset = DoctorProfile.objects.all()
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAdminUser]  # Only admin can delete a doctor
+
+    
+    def get_object(self):
+        # Fetch DoctorProfile by the related user's UUID from URL
+        user_id = self.kwargs["pk"]
+        return get_object_or_404(DoctorProfile, user__id=user_id)
 
     @swagger_auto_schema(operation_summary="Delete a doctor profile (Admin only)")
     def delete(self, request, *args, **kwargs):
@@ -194,14 +214,20 @@ class AppointmentDetailView(generics.GenericAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
     permission_classes = [IsAppointmentOwnerOrDoctor]
+    lookup_field = "id"
 
-    @swagger_auto_schema(operation_summary="Retrieve an appointment by ID")
+    def get_object(self):
+        # Fetch Appointment by its own PK (or UUID if you change it)
+        appointment_id = self.kwargs["pk"]
+        return get_object_or_404(Appointment, id=appointment_id)
+
+    @swagger_auto_schema(operation_summary="Retrieve an appointment by UUID")
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    @swagger_auto_schema(operation_summary="Update an appointment by ID")
+    @swagger_auto_schema(operation_summary="Update an appointment by UUID")
     def put(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
@@ -210,7 +236,7 @@ class AppointmentDetailView(generics.GenericAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(operation_summary="Delete an appointment by ID")
+    @swagger_auto_schema(operation_summary="Delete an appointment by UUID")
     def delete(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.delete()

@@ -1,9 +1,16 @@
+import shortuuid
 from django.conf import settings
 from django.db import models
 
-
 # Doctor Profile
 class DoctorProfile(models.Model):
+    id = models.CharField(
+        primary_key=True,
+        max_length=22,
+        default=shortuuid.uuid,
+        editable=False,
+        unique=True,
+    )
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -22,6 +29,13 @@ class DoctorProfile(models.Model):
 
 # Appointment Model
 class Appointment(models.Model):
+    id = models.CharField(
+        primary_key=True,
+        max_length=22,
+        default=shortuuid.uuid,
+        editable=False,
+        unique=True,
+    )
     STATUS_CHOICES = (
         ("pending", "Pending"),
         ("confirmed", "Confirmed"),
@@ -41,6 +55,7 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"Appointment: {self.patient.username} with {self.doctor.user.username} on {self.date}"
+
 
 
 # Create your models here.
