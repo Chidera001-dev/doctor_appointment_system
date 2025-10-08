@@ -1,7 +1,7 @@
 import datetime
 from rest_framework import serializers
 from .models import Appointment, DoctorProfile
-from authentication.models import User  # Make sure you import your custom User model
+from authentication.models import User 
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
@@ -83,5 +83,5 @@ class AppointmentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context.get("request")
         validated_data["patient"] = request.user
-        validated_data.pop("doctor_id", None)  # remove since we already processed it
+        validated_data.pop("doctor_id", None) 
         return super().create(validated_data)

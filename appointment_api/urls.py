@@ -1,7 +1,9 @@
 from django.urls import path
+
 from .views import (
     AppointmentDetailView,
     AppointmentListView,
+    AppointmentStatusUpdateView,
     DoctorCreateView,
     DoctorDeleteView,
     DoctorDetailView,
@@ -9,7 +11,6 @@ from .views import (
     DoctorUpdateView,
     UserDetailView,
     UserListCreateView,
-    AppointmentStatusUpdateView,
 )
 
 urlpatterns = [
@@ -20,14 +21,20 @@ urlpatterns = [
     path(
         "admin/users/<str:pk>/", UserDetailView.as_view(), name="user-detail"
     ),  # GET, PUT, DELETE
-
- # Doctors (class-based views)
-path("doctors/", DoctorListView.as_view(), name="doctor-list"),                     # List all doctors
-path("doctors/create/", DoctorCreateView.as_view(), name="doctor-create"),          # Create a new doctor
-path("doctors/<str:pk>/", DoctorDetailView.as_view(), name="doctor-detail"),        # Retrieve a doctor by UUID
-path("doctors/<str:pk>/update/", DoctorUpdateView.as_view(), name="doctor-update"), # Update a doctor by UUID
-path("doctors/<str:pk>/delete/", DoctorDeleteView.as_view(), name="doctor-delete"), # Delete a doctor by UUID
-
+    # Doctors (class-based views)
+    path("doctors/", DoctorListView.as_view(), name="doctor-list"),  # List all doctors
+    path(
+        "doctors/create/", DoctorCreateView.as_view(), name="doctor-create"
+    ),  # Create a new doctor
+    path(
+        "doctors/<str:pk>/", DoctorDetailView.as_view(), name="doctor-detail"
+    ),  # Retrieve a doctor by UUID
+    path(
+        "doctors/<str:pk>/update/", DoctorUpdateView.as_view(), name="doctor-update"
+    ),  # Update a doctor by UUID
+    path(
+        "doctors/<str:pk>/delete/", DoctorDeleteView.as_view(), name="doctor-delete"
+    ),  # Delete a doctor by UUID
     # Appointments
     path("appointments/", AppointmentListView.as_view(), name="appointment-list"),
     path(
@@ -35,7 +42,6 @@ path("doctors/<str:pk>/delete/", DoctorDeleteView.as_view(), name="doctor-delete
         AppointmentDetailView.as_view(),
         name="appointment-detail",
     ),
-
     # Appointment Status Update
     path(
         "appointments/<str:pk>/status/",

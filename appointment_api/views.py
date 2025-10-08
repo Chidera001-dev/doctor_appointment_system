@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import filters, generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 
 from authentication.serializers import UserSerializer
 
@@ -104,8 +104,6 @@ class DoctorDetailView(generics.GenericAPIView):
         user_id = self.kwargs["pk"]
         return get_object_or_404(DoctorProfile, user__id=user_id)
 
-    
-
     @swagger_auto_schema(operation_summary="Retrieve a doctor profile by UUID")
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -135,7 +133,7 @@ class DoctorUpdateView(generics.GenericAPIView):
     def get_object(self):
         # Fetch DoctorProfile by the related user's UUID from URL
         user_id = self.kwargs["pk"]
-        return get_object_or_404(DoctorProfile, user__id=user_id) 
+        return get_object_or_404(DoctorProfile, user__id=user_id)
 
     def get_queryset(self):
         user = self.request.user
@@ -158,7 +156,6 @@ class DoctorDeleteView(generics.GenericAPIView):
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAdminUser]  # Only admin can delete a doctor
 
-    
     def get_object(self):
         # Fetch DoctorProfile by the related user's UUID from URL
         user_id = self.kwargs["pk"]
@@ -269,4 +266,4 @@ class AppointmentStatusUpdateView(generics.UpdateAPIView):
         appointment.status = status_choice
         appointment.save()  # This triggers your signal
         serializer = self.get_serializer(appointment)
-        return Response(serializer.data, status=status.HTTP_200_OK)        
+        return Response(serializer.data, status=status.HTTP_200_OK)

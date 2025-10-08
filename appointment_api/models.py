@@ -2,6 +2,7 @@ import shortuuid
 from django.conf import settings
 from django.db import models
 
+
 # Doctor Profile
 class DoctorProfile(models.Model):
     id = models.CharField(
@@ -55,7 +56,6 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"Appointment: {self.patient.username} with {self.doctor.user.username} on {self.date}"
-
 
 
 # Create your models here.
