@@ -19,7 +19,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     patient = serializers.StringRelatedField(read_only=True)
     doctor = serializers.StringRelatedField(read_only=True)
 
-    # Replace PrimaryKeyRelatedField with CharField (so we can accept UUID)
+    
     doctor_id = serializers.CharField(write_only=True)
 
     class Meta:
