@@ -43,4 +43,3 @@ This project is a **Doctor Appointment System** designed to streamline the proce
 
 ---
 
-Feel free to customize this README to better fit your specific implementation details!
