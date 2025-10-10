@@ -1,110 +1,110 @@
-Doctor Appointment Booking System
+# Doctor Appointment Booking System
 
-Project Overview
+# Project Overview
 
-# A comprehensive Django REST Framework API for managing doctor appointments. This system provides secure JWT authentication, role-based access control, and automated email notifications for patients, doctors, and administrators.
+ A comprehensive Django REST Framework API for managing doctor appointments. This system provides secure JWT authentication, role-based access control, and automated email notifications for patients, doctors, and administrators.
 
-🚀 Features
+# 🚀 Features
 
-# JWT Authentication - Secure user registration and login
+ JWT Authentication - Secure user registration and login
 
-# Role-Based Access - Patients, Doctors, and Administrators
+ Role-Based Access - Patients, Doctors, and Administrators
 
-# Appointment Management - Book, confirm, reject, and cancel appointments
+ Appointment Management - Book, confirm, reject, and cancel appointments
 
-# Email Notifications - Automated emails for appointment status changes
+ Email Notifications - Automated emails for appointment status changes
 
-# Doctor Availability - Real-time availability checking
+ Doctor Availability - Real-time availability checking
 
-# Admin Dashboard - Comprehensive user and appointment management
+ Admin Dashboard - Comprehensive user and appointment management
 
-# API Documentation - Swagger/OpenAPI documentation
-
-
-🛠️ Tech Stack
-
-# Backend: Django + Django REST Framework
-
-# Database: MySQL (Production)
-
-# Authentication: JWT Tokens (Simple JWT)
-
-# Email: Mailtrap (Development), Gmail SMTP (Production)
-
-# Documentation: Swagger/OpenAPI with drf-yasg
+ API Documentation - Swagger/OpenAPI documentation
 
 
-📋 Prerequisites
+# 🛠️ Tech Stack
 
-# Before you begin, ensure you have the following installed:
+ Backend: Django + Django REST Framework
 
-# Python 3.8 or higher
+ Database: MySQL (Production)
 
-# MySQL Server
+ Authentication: JWT Tokens (Simple JWT)
 
-# Git
+ Email: Mailtrap (Development), Gmail SMTP (Production)
+
+ Documentation: Swagger/OpenAPI with drf-yasg
 
 
-🚀 Quick Start
+# 📋 Prerequisites
 
-1. Clone the Repository
+ Before you begin, ensure you have the following installed:
 
- # bash
+ Python 3.8 or higher
+
+ MySQL Server
+
+ Git
+
+
+# 🚀 Quick Start
+
+# 1. Clone the Repository
+
+  bash
  git clone https://github.com/Chidera001-dev/doctor-appointment-system.git
 
  cd doctor-appointment-system
 
 
-2. Set Up Virtual Environment
+# 2. Set Up Virtual Environment
 bash
-# Create virtual environment
+ Create virtual environment
 python -m venv venv
 
-# Activate virtual environment
-# On Windows:
+ Activate virtual environment
+ On Windows:
 venv\Scripts\activate
-# On macOS/Linux:
+ On macOS/Linux:
 source venv/bin/activate
 
 
-3. Install Dependencies
+# 3. Install Dependencies
 bash
 pip install -r requirements.txt
 
-4. Set Up Environment Variables
+# 4. Set Up Environment Variables
 Copy the example environment file and configure it:
 
 bash
-# Copy the example environment file
+ Copy the example environment file
 cp .env.example .env
 
-5. Start with Docker Compose
+# 5. Start with Docker Compose
 bash
-# Build and start all services
+ Build and start all services
 docker-compose up --build
 
-# Or run in detached mode
+ Or run in detached mode
 docker-compose up -d --build
 
-6. Run Database Migrations
+# 6. Run Database Migrations
 bash
-# Run migrations in the Docker container
-# Run migrations
+ Run migrations in the Docker container
+ Run migrations
 docker-compose exec (service-name) python manage.py makemigrations
 docker-compose exec (service-name) python manage.py migrate
 
-7. Create Superuser
+# 7. Create Superuser
 bash
-# Create admin user in the Docker container
+ Create admin user in the Docker container
 docker-compose exec web python manage.py createsuperuser
 
-# Follow the prompts to create an admin account:
-# Username: admin
-# Phone_number : +234****
-# Email: admin@example.com
-# Password: ***** 
+ Follow the prompts to create an admin account:
+ Username: admin
+ Phone_number : +234****
+ Email: admin@example.com
+ Password: ***** 
 
-8. Access the Application
+# 8. Access the Application
 Your application is now running! Access it at:
 
 API: http://localhost:8000/
@@ -115,7 +115,7 @@ API Documentation: http://localhost:8000/docs/
 
 MySQL Database: localhost:3306
 
-📚 API Documentation
+# 📚 API Documentation
 # Access API Documentation
 Swagger UI: http://localhost:8000/docs/
 
@@ -123,8 +123,8 @@ ReDoc: http://localhost:8000/redoc/
 
 JSON Schema: http://localhost:8000/swagger.json
 
-🔐 Authentication Endpoints
-Base URL: http://localhost:8000/auth/
+# 🔐 Authentication Endpoints
+# Base URL: http://localhost:8000/auth/
 
 # Method	Endpoint	Description	Access
 
@@ -137,7 +137,7 @@ POST	/auth/token/refresh/	Refresh JWT token	Authenticated
 POST	/auth/token/verify/	Verify JWT token	Authenticated
 
 
-👨‍⚕️ Doctor Management Endpoints
+# 👨‍⚕️ Doctor Management Endpoints
 # Base URL: http://localhost:8000/api/
 
 Method	Endpoint	Description	Access
@@ -152,7 +152,7 @@ PUT	/api/doctors/{uuid}/update/	Update doctor profile	Admin/Doctor
 
 DELETE	/api/doctors/{uuid}/delete/	Delete doctor profile	Admin Only
 
-📅 Appointment Management Endpoints
+# 📅 Appointment Management Endpoints
 
 # Base URL: `http://localhost:8000/api/**
 
@@ -170,7 +170,7 @@ DELETE	/api/appointments/{uuid}/	Cancel appointment	Patient Only
 
 PUT	/api/appointments/{uuid}/status/	Update appointment status	Doctor/Admin
 
-👑 Admin Management Endpoints
+# 👑 Admin Management Endpoints
 
 # Base URL: `http://localhost:8000/api/**
 
@@ -186,7 +186,7 @@ PUT	/api/admin/users/{uuid}/	Update user	Admin Only
 
 DELETE	/api/admin/users/{uuid}/	Delete user	Admin Only
 
-📞 Support
+# 📞 Support
 
 # If you encounter any issues:
 
@@ -198,7 +198,7 @@ Verify your .env file configuration
 
 Check container logs: docker-compose logs
 
-# Visit API documentation: http://localhost:8000/docs/
+ Visit API documentation: http://localhost:8000/docs/
 
 Access Points:
 
