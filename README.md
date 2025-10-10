@@ -200,7 +200,7 @@ Check container logs: docker-compose logs
 
  Visit API documentation: http://localhost:8000/docs/
 
-Access Points:
+# Access Points:
 
 # API: http://localhost:8000/
 
