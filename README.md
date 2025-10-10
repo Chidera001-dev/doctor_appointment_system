@@ -1,45 +1,211 @@
-# Doctor Appointment System
+Doctor Appointment Booking System
 
-## Project Overview
+Project Overview
 
-This Doctor Appointment System is a web-based application that simplifies the process of scheduling and managing appointments for both patients and doctors. It offers secure user authentication, real-time doctor availability, and an intuitive interface for booking and tracking appointments. The system also includes an admin dashboard for overseeing users and appointments, ensuring efficient management and smooth operation.
+# A comprehensive Django REST Framework API for managing doctor appointments. This system provides secure JWT authentication, role-based access control, and automated email notifications for patients, doctors, and administrators.
 
-This project is a **Doctor Appointment System** designed to streamline the process of booking, managing, and tracking appointments between patients and doctors. The system provides a user-friendly interface for patients to schedule appointments, view doctor availability. Doctors can manage their schedules, view upcoming appointments, and update their availability.
+🚀 Features
 
-## Features
+# JWT Authentication - Secure user registration and login
 
-- User authentication for patients and doctors
-- Doctor profile management
-- Appointment booking and cancellation
-- Real-time availability checking
-- Admin dashboard for managing users and appointments
+# Role-Based Access - Patients, Doctors, and Administrators
 
-## Tools & Technologies Used
+# Appointment Management - Book, confirm, reject, and cancel appointments
 
-- **Backend:**  
-    - Python with Django (for RESTful API development)
-    - JWT (JSON Web Tokens) for authentication and authorization
+# Email Notifications - Automated emails for appointment status changes
 
-- **Database:**  
-    - MySQL (for storing user, doctor, and appointment data)
+# Doctor Availability - Real-time availability checking
 
-- **Other Tools:**  
-    - Nodemailer or Twilio (for sending email/SMS notifications)
-    - Postman (for API testing)
-    - Git & GitHub (for version control and collaboration)
+# Admin Dashboard - Comprehensive user and appointment management
 
-## What I Have Done
+# API Documentation - Swagger/OpenAPI documentation
 
-- Designed and implemented the database schema for users, doctors, and appointments.
-- Developed RESTful APIs for user registration, login, appointment booking, and management.
-- Integrated authentication and authorization to secure user data.
 
-## How to Run
+🛠️ Tech Stack
 
-1. Clone the repository.
-2. Install dependencies for the backend.
-3. Set up environment variables for database 
-4. Run backend  servers.
+# Backend: Django + Django REST Framework
 
----
+# Database: MySQL (Production)
 
+# Authentication: JWT Tokens (Simple JWT)
+
+# Email: Mailtrap (Development), Gmail SMTP (Production)
+
+# Documentation: Swagger/OpenAPI with drf-yasg
+
+
+📋 Prerequisites
+
+# Before you begin, ensure you have the following installed:
+
+# Python 3.8 or higher
+
+# MySQL Server
+
+# Git
+
+
+🚀 Quick Start
+
+1. Clone the Repository
+
+ # bash
+ git clone https://github.com/Chidera001-dev/doctor-appointment-system.git
+
+ cd doctor-appointment-system
+
+
+2. Set Up Virtual Environment
+bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+
+
+3. Install Dependencies
+bash
+pip install -r requirements.txt
+
+4. Set Up Environment Variables
+Copy the example environment file and configure it:
+
+bash
+# Copy the example environment file
+cp .env.example .env
+
+5. Start with Docker Compose
+bash
+# Build and start all services
+docker-compose up --build
+
+# Or run in detached mode
+docker-compose up -d --build
+
+6. Run Database Migrations
+bash
+# Run migrations in the Docker container
+# Run migrations
+docker-compose exec (service-name) python manage.py makemigrations
+docker-compose exec (service-name) python manage.py migrate
+
+7. Create Superuser
+bash
+# Create admin user in the Docker container
+docker-compose exec web python manage.py createsuperuser
+
+# Follow the prompts to create an admin account:
+# Username: admin
+# Phone_number : +234****
+# Email: admin@example.com
+# Password: ***** 
+
+8. Access the Application
+Your application is now running! Access it at:
+
+API: http://localhost:8000/
+
+Admin Panel: http://localhost:8000/admin/
+
+API Documentation: http://localhost:8000/docs/
+
+MySQL Database: localhost:3306
+
+📚 API Documentation
+# Access API Documentation
+Swagger UI: http://localhost:8000/docs/
+
+ReDoc: http://localhost:8000/redoc/
+
+JSON Schema: http://localhost:8000/swagger.json
+
+🔐 Authentication Endpoints
+Base URL: http://localhost:8000/auth/
+
+# Method	Endpoint	Description	Access
+
+POST	/auth/signup/	User registration	Public
+
+POST	/auth/token/	Get JWT token (login)	Public
+
+POST	/auth/token/refresh/	Refresh JWT token	Authenticated
+
+POST	/auth/token/verify/	Verify JWT token	Authenticated
+
+
+👨‍⚕️ Doctor Management Endpoints
+# Base URL: http://localhost:8000/api/
+
+Method	Endpoint	Description	Access
+
+GET	/api/doctors/	List all doctors	Public
+
+POST	/api/doctors/create/	Create doctor profile	Admin Only
+
+GET	/api/doctors/{uuid}/	Get doctor details	Public
+
+PUT	/api/doctors/{uuid}/update/	Update doctor profile	Admin/Doctor
+
+DELETE	/api/doctors/{uuid}/delete/	Delete doctor profile	Admin Only
+
+📅 Appointment Management Endpoints
+
+# Base URL: `http://localhost:8000/api/**
+
+Method	Endpoint	Description	Access
+
+GET	/api/appointments/	List appointments	Role-based
+
+POST	/api/appointments/	Book appointment	Patients Only
+
+GET	/api/appointments/{uuid}/	Get appointment details	Owner/Doctor/Admin
+
+PUT	/api/appointments/{uuid}/	Update appointment	Owner/Doctor/Admin
+
+DELETE	/api/appointments/{uuid}/	Cancel appointment	Patient Only
+
+PUT	/api/appointments/{uuid}/status/	Update appointment status	Doctor/Admin
+
+👑 Admin Management Endpoints
+
+# Base URL: `http://localhost:8000/api/**
+
+Method	Endpoint	Description	Access
+
+GET	/api/admin/users/	List all users	Admin Only
+
+POST	/api/admin/users/	Create new user	Admin Only
+
+GET	/api/admin/users/{uuid}/	Get user details	Admin Only
+
+PUT	/api/admin/users/{uuid}/	Update user	Admin Only
+
+DELETE	/api/admin/users/{uuid}/	Delete user	Admin Only
+
+📞 Support
+
+# If you encounter any issues:
+
+Check the troubleshooting section above
+
+Ensure Docker Desktop is running
+
+Verify your .env file configuration
+
+Check container logs: docker-compose logs
+
+# Visit API documentation: http://localhost:8000/docs/
+
+Access Points:
+
+# API: http://localhost:8000/
+
+# Admin: http://localhost:8000/admin/
+
+# Docs: http://localhost:8000/docs/
+
+Happy Coding with Docker! 🐳🚀
