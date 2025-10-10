@@ -96,7 +96,7 @@ docker-compose exec (service-name) python manage.py migrate
 # 7. Create Superuser
 bash
  Create admin user in the Docker container
-docker-compose exec web python manage.py createsuperuser
+docker-compose exec (service-name) python manage.py createsuperuser
 
  Follow the prompts to create an admin account:
  Username: admin
