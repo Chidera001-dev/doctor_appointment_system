@@ -11,6 +11,7 @@ from authentication.serializers import UserSerializer
 from .models import Appointment, DoctorProfile
 from .permissions import IsAdminOrDoctor, IsAdminUser, IsAppointmentOwnerOrDoctor
 from .serializers import AppointmentSerializer, DoctorProfileSerializer
+from rest_framework.pagination import PageNumberPagination , LimitOffsetPagination
 
 User = get_user_model()
 
@@ -72,7 +73,7 @@ class UserDetailView(generics.GenericAPIView):
 
 
 class DoctorListView(generics.GenericAPIView):
-    queryset = DoctorProfile.objects.all()
+    queryset = DoctorProfile.objects.order_by('pk')
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAuthenticated]
 
@@ -85,10 +86,19 @@ class DoctorListView(generics.GenericAPIView):
     search_fields = ["specialization"]
     ordering_fields = ["experience_years"]
     ordering = ["-experience_years"]
+    pagination_class = LimitOffsetPagination
+
 
     @swagger_auto_schema(operation_summary="List all doctors")
     def get(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
+
+         #  pagination 
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
