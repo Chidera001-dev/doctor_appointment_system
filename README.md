@@ -107,7 +107,9 @@ docker-compose exec (service-name) python manage.py createsuperuser
 # 8. Access the Application
 Your application is now running! Access it at:
 
-API: http://localhost:8000/
+Authentication : http://localhost:8000/auth/
+
+API: http://localhost:8000/api/
 
 Admin Panel: http://localhost:8000/admin/
 
@@ -121,7 +123,6 @@ Swagger UI: http://localhost:8000/docs/
 
 ReDoc: http://localhost:8000/redoc/
 
-JSON Schema: http://localhost:8000/swagger.json
 
 # 🔐 Authentication Endpoints
 # Base URL: http://localhost:8000/auth/

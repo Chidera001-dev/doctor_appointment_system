@@ -1,5 +1,9 @@
 # Created by https://gitignore.org
 # Python.gitignore
+# Ignore all migration files except __init__.py
+**/migrations/*
+!**/migrations/__init__.py
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -217,5 +221,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
 
 

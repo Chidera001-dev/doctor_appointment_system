@@ -7,7 +7,7 @@ from .models import User
 
 # Input serializer (for registration + update)
 class UserSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(read_only=True) 
+    id = serializers.CharField(read_only=True)
 
     username = serializers.CharField(
         max_length=25, validators=[UniqueValidator(queryset=User.objects.all())]
@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         min_length=8,
         write_only=True,
-        required=True,  
+        required=True,
         style={"input_type": "password"},
     )
 
@@ -55,7 +55,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Output serializer (safe response)
 class UserCreationSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(read_only=True)  
+    id = serializers.CharField(read_only=True)
 
     class Meta:
         model = User

@@ -1,7 +1,10 @@
 import datetime
+
 from rest_framework import serializers
+
+from authentication.models import User
+
 from .models import Appointment, DoctorProfile
-from authentication.models import User 
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
@@ -19,7 +22,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
     patient = serializers.StringRelatedField(read_only=True)
     doctor = serializers.StringRelatedField(read_only=True)
 
-    
     doctor_id = serializers.CharField(write_only=True)
 
     class Meta:
@@ -49,7 +51,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
         except User.DoesNotExist:
             raise serializers.ValidationError({"doctor_id": "Doctor user not found."})
         except DoctorProfile.DoesNotExist:
-            raise serializers.ValidationError({"doctor_id": "Doctor profile not found."})
+            raise serializers.ValidationError(
+                {"doctor_id": "Doctor profile not found."}
+            )
 
         # ---- validate availability ----
         available_days = [d.strip().lower() for d in doctor.available_days.split(",")]
@@ -83,5 +87,5 @@ class AppointmentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context.get("request")
         validated_data["patient"] = request.user
-        validated_data.pop("doctor_id", None) 
+        validated_data.pop("doctor_id", None)
         return super().create(validated_data)

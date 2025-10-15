@@ -10,7 +10,6 @@ from .models import Appointment
 def send_appointment_status_email(sender, instance, **kwargs):
     """Send email when doctor confirms or cancels an appointment"""
 
-    # Don't send email for new appointments
     if not instance.pk:
         return
 
@@ -53,7 +52,7 @@ def send_appointment_status_email(sender, instance, **kwargs):
             """
 
         else:
-            return  # ignore pending → pending, etc.
+            return
 
         # Send the email via Mailtrap SMTP
         send_mail(

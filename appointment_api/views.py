@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import filters, generics, status
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -11,7 +12,6 @@ from authentication.serializers import UserSerializer
 from .models import Appointment, DoctorProfile
 from .permissions import IsAdminOrDoctor, IsAdminUser, IsAppointmentOwnerOrDoctor
 from .serializers import AppointmentSerializer, DoctorProfileSerializer
-from rest_framework.pagination import PageNumberPagination , LimitOffsetPagination
 
 User = get_user_model()
 
@@ -73,7 +73,7 @@ class UserDetailView(generics.GenericAPIView):
 
 
 class DoctorListView(generics.GenericAPIView):
-    queryset = DoctorProfile.objects.order_by('pk')
+    queryset = DoctorProfile.objects.order_by("pk")
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAuthenticated]
 
@@ -88,17 +88,16 @@ class DoctorListView(generics.GenericAPIView):
     ordering = ["-experience_years"]
     pagination_class = LimitOffsetPagination
 
-
     @swagger_auto_schema(operation_summary="List all doctors")
     def get(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-         #  pagination 
+        #  pagination
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        
+
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -164,7 +163,7 @@ class DoctorUpdateView(generics.GenericAPIView):
 class DoctorDeleteView(generics.GenericAPIView):
     queryset = DoctorProfile.objects.all()
     serializer_class = DoctorProfileSerializer
-    permission_classes = [IsAdminUser]  # Only admin can delete a doctor
+    permission_classes = [IsAdminUser]
 
     def get_object(self):
         # Fetch DoctorProfile by the related user's UUID from URL
@@ -274,6 +273,6 @@ class AppointmentStatusUpdateView(generics.UpdateAPIView):
             )
 
         appointment.status = status_choice
-        appointment.save()  # This triggers your signal
+        appointment.save()
         serializer = self.get_serializer(appointment)
         return Response(serializer.data, status=status.HTTP_200_OK)

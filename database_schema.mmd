@@ -1,19 +1,40 @@
 erDiagram
     USER {
-        int id PK
-        string username
-        string email
-        boolean is_doctor
+        string id PK "Primary Key (shortUUID)"
+        string username "Unique (25 chars)"
+        string email "Unique (80 chars)"
+        string phone_number "Unique phone number"
+        string first_name "First name"
+        string last_name "Last name"
+        string password "Hashed password"
+        boolean is_doctor "Doctor role flag"
+        boolean is_patient "Patient role flag"
+        boolean is_staff "Staff/admin flag"
+        boolean is_superuser "Superuser flag"
+        boolean is_active "Account active status"
+        datetime date_joined "Account creation"
+        datetime last_login "Last login timestamp"
     }
+
     DOCTOR_PROFILE {
-        int id PK
-        int user_id FK
-        string specialization
+        string id PK "Primary Key (shortUUID)"
+        string user_id FK "References USER.id"
+        string specialization "Medical specialty"
+        int experience_years "Years of experience"
+        string available_days "Available days (e.g., 'Mon, Wed, Fri')"
+        string available_time_slots "Available times (e.g., '10AM-2PM')"
     }
+
     APPOINTMENT {
-        int id PK
-        int patient_id FK
-        int doctor_id FK
-        date date
-        string status
+        string id PK "Primary Key (shortUUID)"
+        string patient_id FK "References USER.id"
+        string doctor_id FK "References DOCTOR_PROFILE.id"
+        date date "Appointment date"
+        time time "Appointment time"
+        string status "pending/confirmed/cancelled"
+        datetime created_at "Booking timestamp"
     }
+
+    USER ||--o| DOCTOR_PROFILE : "has_one"
+    USER ||--o{ APPOINTMENT : "makes_as_patient"
+    DOCTOR_PROFILE ||--o{ APPOINTMENT : "has_appointments"

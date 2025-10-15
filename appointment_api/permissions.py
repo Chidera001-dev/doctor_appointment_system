@@ -23,7 +23,7 @@ class IsAdminOrDoctor(permissions.BasePermission):
         user = request.user
         if user.is_staff:
             return True
-        # For DoctorProfile-related objects
+
         return hasattr(obj, "user") and obj.user == user
 
 

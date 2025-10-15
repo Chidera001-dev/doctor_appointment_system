@@ -20,9 +20,9 @@ class UserCreateView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        # ✅ Return saved user data
+        #  Return saved user data
         return Response(
-            UserCreationSerializer(user).data,  # show created user info
+            UserCreationSerializer(user).data,
             status=status.HTTP_201_CREATED,
         )
 
