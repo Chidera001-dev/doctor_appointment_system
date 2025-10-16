@@ -24,7 +24,9 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),  # Django admin
     path("api/", include("appointment_api.urls")),  # all your app endpoints
-    path("auth/", include("authentication.urls")),  # authentication endpoints
+    # Djoser Auth endpoints
+    path("auth/", include("djoser.urls")),  # handles register, user info, etc.
+    path("auth/", include("djoser.urls.jwt")),  # handles login, refresh, verify
     path(
         "swagger<format>.json|.yaml",
         schema_view.without_ui(cache_timeout=0),
