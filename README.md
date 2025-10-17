@@ -127,86 +127,137 @@ ReDoc: http://localhost:8000/redoc/
 # 🔐 Authentication Endpoints
 # Base URL: http://localhost:8000/auth/
 
-# Method	Endpoint	Description	Access
-
-POST	/auth/signup/	User registration	Public
-
-POST	/auth/token/	Get JWT token (login)	Public
-
-POST	/auth/token/refresh/	Refresh JWT token	Authenticated
-
-POST	/auth/token/verify/	Verify JWT token	Authenticated
-
 
 # 👨‍⚕️ Doctor Management Endpoints
 # Base URL: http://localhost:8000/api/
 
-Method	Endpoint	Description	Access
+# Register User
+POST :   http://localhost:8000/auth/signup/
 
-GET	/api/doctors/	List all doctors	Public
 
-POST	/api/doctors/create/	Create doctor profile	Admin Only
+{
+  "username": "john",
+  "email": "john@gmail.com",
+  "phone_number": "+2349057928312",
+  "password": "johnpass123#"
+}
 
-GET	/api/doctors/{uuid}/	Get doctor details	Public
+# register doctor
+POST :   http://localhost:8000/auth/signup/
+{
+  "username": "drjames",
+  "email": "drjames@gmail.com",
+  "phone_number": "+2348109378342",
+  "password": "drjamespass123#"
+}
 
-PUT	/api/doctors/{uuid}/update/	Update doctor profile	Admin/Doctor
+# input your valid access key
+POST : localhost:8000//auth/jwt/create/
+{
+ 
+  "email": "drjames@gmail.com",
+  "password": "drjamespass123#"
+}
 
-DELETE	/api/doctors/{uuid}/delete/	Delete doctor profile	Admin Only
+POST : localhost:8000/api/doctors/create/
+{
+  "user": "",
+  "specialization": "Cardiologist",
+  "experience_years": 10,
+  "available_days": "Mon, Wed, Fri",
+  "available_time_slots": "09:00-14:00"
+}
 
-# 📅 Appointment Management Endpoints
+# user can view the list of available doctors
+# input your valid access key
+POST : localhost:8000//auth/jwt/create/
+{
+  
+  "email": "drjames@gmail.com",
+  "password": "drjamespass123#"
+}
 
-# Base URL: `http://localhost:8000/api/**
 
-Method	Endpoint	Description	Access
+GET : localhost:8000/api/doctors/
 
-GET	/api/appointments/	List appointments	Role-based
+# retrieve a particular doctors uuid
 
-POST	/api/appointments/	Book appointment	Patients Only
+GET : localhost:8000/api/doctors/<doctor_id>/
 
-GET	/api/appointments/{uuid}/	Get appointment details	Owner/Doctor/Admin
 
-PUT	/api/appointments/{uuid}/	Update appointment	Owner/Doctor/Admin
+# Appointment
+users can also create appointment
 
-DELETE	/api/appointments/{uuid}/	Cancel appointment	Patient Only
+POST : localhost:8000/api/appointments/
 
-PUT	/api/appointments/{uuid}/status/	Update appointment status	Doctor/Admin
+{
+    "doctor_id": "",
+    "date": "2025-10-17",
+    "time": "11:00"
+}
 
-# 👑 Admin Management Endpoints
+update or delete the appointment
 
-# Base URL: `http://localhost:8000/api/**
+PUT : localhost:8000/api/appointments/<appointment_id>/
 
-Method	Endpoint	Description	Access
+DELETE : localhost:8000/api/appointments/<appointment_id>/
 
-GET	/api/admin/users/	List all users	Admin Only
 
-POST	/api/admin/users/	Create new user	Admin Only
+# doctors get all appointment assign to them 
+# input your valid access key
+POST : localhost:8000//auth/jwt/create/
+{
+ 
+  "email": "drjames@gmail.com",
+  "password": "drjamespass123#"
+}
 
-GET	/api/admin/users/{uuid}/	Get user details	Admin Only
+GET : localhost:8000/api/appointments/<appointment_id>/
 
-PUT	/api/admin/users/{uuid}/	Update user	Admin Only
+# doctors confirm or reject the appointment
 
-DELETE	/api/admin/users/{uuid}/	Delete user	Admin Only
+PATCH : localhost:8000/api/appointments/status/
 
-# 📞 Support
+{
+    "status" : "confirmed"
+}
 
-# If you encounter any issues:
+# USER MANAGEMENT (Admin)
 
-Check the troubleshooting section above
+Endpoints for creating and managing users (patients and doctors).
+# input your valid access key
+POST : localhost:8000/auth/jwt/create/
+{
+    "email" : "adminuser@gmail.com",
+    "password" : "Chidera123"
+}
 
-Ensure Docker Desktop is running
+Admin users can create users or doctors
 
-Verify your .env file configuration
+POST : localhost:8000/api/admin/users/
 
-Check container logs: docker-compose logs
+{
+  "username": "user10
+  "email": "user10@gmail.com",
+  "phone_number": "+2349057928555",
+  "password": "userpass10"
+}
 
- Visit API documentation: http://localhost:8000/docs/
+views the list of doctors and patient
 
-# Access Points:
+GET : localhost:8000/api/admin/users/
 
-# API: http://localhost:8000/
+also can get Single User
+GET : localhost:8000/api/admin/users/<user_id>/
 
-# Admin: http://localhost:8000/admin/
+can also Update User
+PUT localhost:8000/api/admin/users/<user_id>/
 
-# Docs: http://localhost:8000/docs/
+can also Delete user
+DELETE /api/admin/users/<user_id>/
 
-Happy Coding with Docker! 🐳🚀
+
+
+
+
+
