@@ -23,10 +23,11 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # Django admin
-    path("api/", include("appointment_api.urls")),  # all your app endpoints
+    path("auth/", include("authentication.urls")),
     # Djoser Auth endpoints
     path("auth/", include("djoser.urls")),  # handles register, user info, etc.
     path("auth/", include("djoser.urls.jwt")),  # handles login, refresh, verify
+    path("api/", include("appointment_api.urls")),  # all your app endpoints
     path(
         "swagger<format>.json|.yaml",
         schema_view.without_ui(cache_timeout=0),
@@ -39,3 +40,7 @@ urlpatterns = [
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ]
+
+
+
+

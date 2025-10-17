@@ -132,7 +132,7 @@ ReDoc: http://localhost:8000/redoc/
 # Base URL: http://localhost:8000/api/
 
 # Register User
-POST :   http://localhost:8000/auth/signup/
+POST :   localhost:8000/auth/signup/
 
 
 {
@@ -143,7 +143,7 @@ POST :   http://localhost:8000/auth/signup/
 }
 
 # register doctor
-POST :   http://localhost:8000/auth/signup/
+POST :   localhost:8000/auth/signup/
 {
   "username": "drjames",
   "email": "drjames@gmail.com",
@@ -152,7 +152,7 @@ POST :   http://localhost:8000/auth/signup/
 }
 
 # input your valid access key
-POST : localhost:8000//auth/jwt/create/
+POST : localhost:8000/auth/token/
 {
  
   "email": "drjames@gmail.com",
@@ -170,7 +170,7 @@ POST : localhost:8000/api/doctors/create/
 
 # user can view the list of available doctors
 # input your valid access key
-POST : localhost:8000//auth/jwt/create/
+POST : localhost:8000/auth/token/
 {
   
   "email": "drjames@gmail.com",
@@ -205,7 +205,7 @@ DELETE : localhost:8000/api/appointments/<appointment_id>/
 
 # doctors get all appointment assign to them 
 # input your valid access key
-POST : localhost:8000//auth/jwt/create/
+POST : localhost:8000/auth/token/
 {
  
   "email": "drjames@gmail.com",
@@ -226,7 +226,7 @@ PATCH : localhost:8000/api/appointments/status/
 
 Endpoints for creating and managing users (patients and doctors).
 # input your valid access key
-POST : localhost:8000/auth/jwt/create/
+POST : localhost:8000/auth/token/
 {
     "email" : "adminuser@gmail.com",
     "password" : "Chidera123"
@@ -251,10 +251,10 @@ also can get Single User
 GET : localhost:8000/api/admin/users/<user_id>/
 
 can also Update User
-PUT localhost:8000/api/admin/users/<user_id>/
+PUT : localhost:8000/api/admin/users/<user_id>/
 
 can also Delete user
-DELETE /api/admin/users/<user_id>/
+DELETE : api/admin/users/<user_id>/
 
 
 
