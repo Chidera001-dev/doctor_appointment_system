@@ -30,6 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username", "email", "phone_number", "password"]
+        ref_name = "CustomUserSerializer"
 
     def create(self, validated_data):
         user = User(
@@ -60,3 +61,4 @@ class UserCreationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username", "email", "phone_number"]
+        ref_name = "CustomUserCreationSerializer"
