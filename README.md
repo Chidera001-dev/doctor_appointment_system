@@ -132,91 +132,93 @@ ReDoc: http://localhost:8000/redoc/
 # Base URL: http://localhost:8000/api/
 
 # Register User
-POST :   localhost:8000/auth/signup/
+lets create a new user
+POST :  http://127.0.0.1:8000/auth/signup/
+
 
 
 {
-  "username": "john",
-  "email": "john@gmail.com",
-  "phone_number": "+2349057928312",
-  "password": "johnpass123#"
+  "username": "nono",
+  "email": "nono@gmail.com",
+  "phone_number": "+2349050855555",
+  "password": "nonopass123#"
 }
 
 # register doctor
-POST :   localhost:8000/auth/signup/
+let create a new doctor user
+POST :   http://127.0.0.1:8000/auth/signup/
 {
-  "username": "drjames",
-  "email": "drjames@gmail.com",
-  "phone_number": "+2348109378342",
-  "password": "drjamespass123#"
+  "username": "drkosi",
+  "email": "drkosi@gmail.com",
+  "phone_number": "+2348109378666",
+  "password": "drkosipass123#"
 }
 
 # input your valid access key
-POST : localhost:8000/auth/token/
+POST : http://127.0.0.1:8000/auth/token/
 {
  
-  "email": "drjames@gmail.com",
-  "password": "drjamespass123#"
+  "email": "drkosi@gmail.com",
+  "password": "drkosipass123#"
 }
 
-POST : localhost:8000/api/doctors/create/
+PUT : http://127.0.0.1:8000/api/doctors/<doctor_id>/update/
 {
-  "user": "",
   "specialization": "Cardiologist",
   "experience_years": 10,
-  "available_days": "Mon, Wed, Fri",
-  "available_time_slots": "09:00-14:00"
+  "available_days": "Mon, Wed, Sat",
+  "available_time_slots": "7AM-9PM"
+}
+
+
+# input your valid access key
+POST : http://127.0.0.1:8000/auth/token/
+{
+  
+  "email": "nono@gmail.com",
+  "password": "nonopass123#"
 }
 
 # user can view the list of available doctors
-# input your valid access key
-POST : localhost:8000/auth/token/
-{
-  
-  "email": "drjames@gmail.com",
-  "password": "drjamespass123#"
-}
-
-
-GET : localhost:8000/api/doctors/
+GET : http://127.0.0.1:8000/api/doctors/
 
 # retrieve a particular doctors uuid
 
-GET : localhost:8000/api/doctors/<doctor_id>/
+GET : http://127.0.0.1:8000/api/doctors/<doctor_id>/
 
 
 # Appointment
-users can also create appointment
+# users can also create appointment
 
-POST : localhost:8000/api/appointments/
+POST : http://127.0.0.1:8000/api/appointments/
 
 {
-    "doctor_id": "",
+    "doctor_id": "KpQ7TrjdR4hDje9Hu2n8Le",
     "date": "2025-10-17",
     "time": "11:00"
 }
 
-update or delete the appointment
+# update or delete the appointment
 
-PUT : localhost:8000/api/appointments/<appointment_id>/
+PUT : http://127.0.0.1:8000/api/appointments/<appointment_id>/
 
-DELETE : localhost:8000/api/appointments/<appointment_id>/
+DELETE :http://127.0.0.1:8000/api/appointments/<appointment_id>/
 
 
 # doctors get all appointment assign to them 
 # input your valid access key
-POST : localhost:8000/auth/token/
+POST :http://127.0.0.1:8000/auth/token/
 {
  
-  "email": "drjames@gmail.com",
-  "password": "drjamespass123#"
+  "email": "drkosi@gmail.com",
+  "password": "drkosipass123#"
 }
 
-GET : localhost:8000/api/appointments/<appointment_id>/
+GET : http://127.0.0.1:8000/api/appointments/<appointment_id>/
 
 # doctors confirm or reject the appointment
 
-PATCH : localhost:8000/api/appointments/status/
+PATCH : http://127.0.0.1:8000/api/appointments/<appointment_id>/status/
 
 {
     "status" : "confirmed"
@@ -226,35 +228,61 @@ PATCH : localhost:8000/api/appointments/status/
 
 Endpoints for creating and managing users (patients and doctors).
 # input your valid access key
-POST : localhost:8000/auth/token/
+POST : http://127.0.0.1:8000/auth/token/
 {
     "email" : "adminuser@gmail.com",
     "password" : "Chidera123"
 }
 
-Admin users can create users or doctors
+# Admin users can create users or doctors
 
-POST : localhost:8000/api/admin/users/
+lets say we want to create a new doctor as an admin
+you first register the user and then use the users id to create the doctor profile
 
+POST : http://127.0.0.1:8000/api/admin/users/
 {
-  "username": "user10
-  "email": "user10@gmail.com",
+  "username": "druser10
+  "email": "druser10@gmail.com",
   "phone_number": "+2349057928555",
-  "password": "userpass10"
+  "password": "druserpass10"
 }
+
+ POST : http://127.0.0.1:8000/api/doctors/create/
+
+{ "user": "",
+   "specialization": "Cardiologist",
+  "experience_years": 10,
+  "available_days": "Mon, Wed, Sat",
+  "available_time_slots": "10AM-12PM"
+
+} 
+
+you can also update the doctors profile
+
+PUT : http://127.0.0.1:8000/api/doctors/<doctor_id>/update/
+{ "user": "",
+   "specialization": "Cardiologist",
+  "experience_years": 30,
+  "available_days": "Mon, Wed, Sun",
+  "available_time_slots": "9AM-5PM"
+
+}
+
+delete doctors profile
+PUT : http://127.0.0.1:8000/api/doctors/<doctor_id>/delete/
 
 views the list of doctors and patient
 
-GET : localhost:8000/api/admin/users/
+GET : http://127.0.0.1:8000/api/admin/users/
 
 also can get Single User
-GET : localhost:8000/api/admin/users/<user_id>/
+GET : http://127.0.0.1:8000/api/admin/users/<user_id>/
 
 can also Update User
-PUT : localhost:8000/api/admin/users/<user_id>/
+PUT : http://127.0.0.1:8000/api/admin/users/<user_id>/
 
 can also Delete user
-DELETE : api/admin/users/<user_id>/
+DELETE : http://127.0.0.1:8000/api/admin/users/<user_id>/
 
 
 
