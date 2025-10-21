@@ -1,61 +1,79 @@
 version: "3.9"
 
 services:
+  #  MySQL Database Service
   appointment_api:
     image: mysql:8.0
-    container_name:  mysql_appointment_api  
-    restart: always  # automatically restart if container crashes
+    container_name: mysql_appointment_api
+    restart: always
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}   # set root password
-      MYSQL_DATABASE: ${DB_NAME}                  #  create a database at startup
-      MYSQL_USER: ${DB_USER}                     # create a custom user
-      MYSQL_PASSWORD: ${DB_PASSWORD}             # password for the custom user
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}     # root password
+      MYSQL_DATABASE: ${DB_NAME}                   # database name
+      MYSQL_USER: ${DB_USER}                       # database user
+      MYSQL_PASSWORD: ${DB_PASSWORD}               # database user password
     ports:
-        - "3307:3306"                        # map host port -> container port
+      - "3307:3306"                                # host:container ports
     volumes:
-      - doctor_appointment_api_data:/var/lib/mysql     # persist database data
+      - doctor_appointment_api_data:/var/lib/mysql # persist database
     networks:
       - backend
 
+  #  Adminer Database Management UI
   adminer:
     image: adminer:latest
     container_name: healthcare_ui
     restart: always
     ports:
-      - "8080:8080"
+      - "8080:8080"  # access via http://localhost:8080
     networks:
       - backend
 
+  #  Django API Service
   api_app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: health_api
     restart: always
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "sleep 15 &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
-    
     ports:
       - "8000:8000"
-    env_file:   
-      - .env 
+    env_file:
+      - .env
     environment:
+      # Database Configuration
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: appointment_api
-      DB_PORT: 3306 
+      DB_PORT: ${DB_PORT}
+
+      # Email Configuration 
+      EMAIL_BACKEND: ${EMAIL_BACKEND}
+      EMAIL_HOST: ${EMAIL_HOST}
+      EMAIL_PORT: ${EMAIL_PORT}
+      EMAIL_USE_TLS: ${EMAIL_USE_TLS}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
+
     depends_on:
       - appointment_api
     networks:
       - backend
 
+#  Volumes (Persistent Storage)
 volumes:
   doctor_appointment_api_data:
 
+#  Network
 networks:
   backend:
 

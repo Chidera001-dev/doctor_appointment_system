@@ -54,7 +54,6 @@ def send_appointment_status_email(sender, instance, **kwargs):
         else:
             return
 
-        # Send the email via Mailtrap SMTP
         send_mail(
             subject,
             message.strip(),
