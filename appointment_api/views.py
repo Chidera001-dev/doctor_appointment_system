@@ -70,8 +70,6 @@ class UserDetailView(generics.GenericAPIView):
 
 
 # Doctor Views
-
-
 class DoctorListView(generics.GenericAPIView):
     queryset = DoctorProfile.objects.order_by("pk")
     serializer_class = DoctorProfileSerializer
@@ -181,8 +179,6 @@ class DoctorDeleteView(generics.GenericAPIView):
 
 
 # Appointment Views
-
-
 class AppointmentListView(generics.GenericAPIView):
     serializer_class = AppointmentSerializer
     permission_classes = [IsAuthenticated, IsAppointmentOwnerOrDoctor]
