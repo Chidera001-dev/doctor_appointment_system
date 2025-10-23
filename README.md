@@ -29,7 +29,7 @@
 
  Authentication: JWT Tokens (Simple JWT)
 
- Email: Mailtrap (Development), Gmail SMTP (Production)
+ Email: Mailtrap (Development),  Brevo (Production)
 
  Documentation: Swagger/OpenAPI with drf-yasg
 
@@ -43,6 +43,8 @@
  MySQL Server
 
  Git
+
+ Docker
 
 
 # 🚀 Quick Start
@@ -283,6 +285,15 @@ PUT : http://127.0.0.1:8000/api/admin/users/<user_id>/
 
 can also Delete user
 DELETE : http://127.0.0.1:8000/api/admin/users/<user_id>/
+
+
+# Deployment (PythonAnywhere)
+
+You can access the live deployed version of the Doctor Appointment Booking API on PythonAnywhere:
+
+Base API URL : https://chidera01.pythonanywhere.com/
+
+Admin Panel : https://chidera01.pythonanywhere.com/admin/
 
 
 
