@@ -1,8 +1,8 @@
 import os
-from pathlib import Path
-from dotenv import load_dotenv
 from datetime import timedelta
+from pathlib import Path
 
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,9 +14,8 @@ else:
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 
 # Quick-start development settings - unsuitable for production
@@ -29,9 +28,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'chidera01.pythonanywhere.com']
-
-
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "chidera01.pythonanywhere.com"]
 
 
 # Application definition
@@ -107,7 +104,6 @@ DATABASES = {
 }
 
 
-
 # # EMAIL CONFIGURATION (Mailtrap for deveploment)
 # EMAIL_BACKEND = os.getenv(
 #     "EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend"
@@ -134,7 +130,7 @@ else:
     EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
     EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
     EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")    
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
